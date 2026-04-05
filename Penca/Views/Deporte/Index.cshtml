@@ -1,0 +1,32 @@
+@model List<Penca.Models.Deporte>
+@{
+    ViewData["Title"] = "Lista Deportes";
+}
+
+<h1>Listado de Deportes</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Nuevo Deporte</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Es deporte de equipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.Id</td>
+                <td>@d.Name</td>
+                <td>@(d.IsTeamSport ? "Sí" : "No")</td>
+                <td><a asp-action="Delete" asp-route-id="@d.Id" class="btn btn-danger">Eliminar</a></td>
+                <td><a asp-action="Update" asp-route-id="@d.Id" class="btn btn-primary">Editar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

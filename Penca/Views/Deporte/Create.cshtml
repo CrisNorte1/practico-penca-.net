@@ -1,0 +1,29 @@
+@model Penca.Models.Deporte
+
+@{
+    ViewData["Title"] = "Crear Deporte";
+}
+
+<h1>Crear Deporte</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input asp-for="IsTeamSport" class="form-check-input" />
+        <label asp-for="IsTeamSport" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,34 @@
+﻿@model List<Penca.Models.Pais>
+@{
+    ViewData["Title"] = "Lista Paises";
+}
+
+<h1>Listado de Países</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Nuevo País</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Código</th>
+            <th>Fecha de Fundación</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pais in Model)
+        {
+            <tr>
+                <td>@pais.Id</td>
+                <td>@pais.Nombre</td>
+                <td>@pais.Codigo</td>
+                <td>@pais.FechaFundacion.ToShortDateString()</td>
+                <td><a asp-action="Delete" asp-route-id="@pais.Id" class="btn btn-danger">Eliminar</a></td>
+                <td><a asp-action="Update" asp-route-id="@pais.Id" class="btn btn-primary">Editar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

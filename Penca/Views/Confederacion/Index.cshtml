@@ -1,0 +1,32 @@
+@model List<Penca.Models.Confederacion>
+@{
+    ViewData["Title"] = "Lista Confederaciones";
+}
+
+<h1>Listado de Confederaciones</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Nueva Confederación</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Región</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Region</td>
+                <td><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a></td>
+                <td><a asp-action="Update" asp-route-id="@item.Id" class="btn btn-primary">Editar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,38 @@
+﻿@model Penca.Models.Pais
+
+@{
+    ViewData["Title"] = "Editar País";
+}
+
+<h1>Editar País</h1>
+
+<form asp-action="Update" method="post">
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Codigo" class="form-label"></label>
+        <input asp-for="Codigo" class="form-control" />
+        <span asp-validation-for="Codigo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaFundacion" class="form-label"></label>
+        <input asp-for="FechaFundacion" type="date" class="form-control" />
+        <span asp-validation-for="FechaFundacion" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
