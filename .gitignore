@@ -1,0 +1,35 @@
+# Carpetas de compilación
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Archivos generados
+*.log
+*.cache
+*.pdb
+*.dll
+*.exe
+
+# Configuración local
+appsettings.Development.json
+
+# Archivos de EF Migrations (opcional, normalmente NO se ignoran)
+# Migrations/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Rider / VS Code (por si acaso)
+.idea/
+.vscode/
+
+# Otros
+*.db
+*.sqlite

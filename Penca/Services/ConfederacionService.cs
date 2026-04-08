@@ -1,39 +1,47 @@
+using Penca.Data;
 using Penca.Models;
 
 namespace Penca.Services
 {
     public class ConfederacionService
     {
-        private static List<Confederacion> _confederaciones = new List<Confederacion>
+        private readonly AppDbContext _context;
+
+        public ConfederacionService(AppDbContext context)
         {
-            new Confederacion { Id = 1, Name = "CONMEBOL", Region = "Sudamérica" },
-            new Confederacion { Id = 2, Name = "UEFA", Region = "Europa" },
-            new Confederacion { Id = 3, Name = "CONCACAF", Region = "Norteamérica" }
-        };
+            _context = context;
+        }
 
         public List<Confederacion> GetConfederaciones()
         {
-            return _confederaciones;
+            return _context.Confederaciones.ToList();
         }
 
         public void AddConfederacion(Confederacion conf)
         {
-            conf.Id = _confederaciones.Any() ? _confederaciones.Max(c => c.Id) + 1 : 1;
-            _confederaciones.Add(conf);
+            _context.Confederaciones.Add(conf);
+            _context.SaveChanges();
         }
 
         public void RemoveConfederacion(Confederacion conf)
         {
-            _confederaciones.Remove(conf);
+            var existing = _context.Confederaciones.Find(conf.Id);
+            if (existing != null)
+            {
+                _context.Confederaciones.Remove(existing);
+                _context.SaveChanges();
+            }
         }
 
         public void UpdateConfederacion(Confederacion conf)
         {
-            var existing = _confederaciones.FirstOrDefault(c => c.Id == conf.Id);
+            var existing = _context.Confederaciones.Find(conf.Id);
             if (existing != null)
             {
                 existing.Name = conf.Name;
                 existing.Region = conf.Region;
+                existing.DeporteId = conf.DeporteId;
+                _context.SaveChanges();
             }
         }
     }

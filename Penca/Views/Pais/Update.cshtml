@@ -22,6 +22,14 @@
     </div>
 
     <div class="mb-3">
+        <label asp-for="ConfederacionId" class="form-label">Confederación</label>
+        <select asp-for="ConfederacionId" class="form-control" asp-items="@(new SelectList(ViewBag.Confederaciones, "Id", "Name"))">
+            <option value="">-- Seleccione --</option>
+        </select>
+        <span asp-validation-for="ConfederacionId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="FechaFundacion" class="form-label"></label>
         <input asp-for="FechaFundacion" type="date" class="form-control" />
         <span asp-validation-for="FechaFundacion" class="text-danger"></span>

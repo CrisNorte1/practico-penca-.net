@@ -1,7 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using Penca.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Registra el DbContext de la aplicación usando la cadena de conexión en appsettings.json
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Registrar los servicios que usan AppDbContext
+builder.Services.AddScoped<Penca.Services.PaisService>();
+builder.Services.AddScoped<Penca.Services.ConfederacionService>();
+builder.Services.AddScoped<Penca.Services.DeporteService>();
 
 var app = builder.Build();
 

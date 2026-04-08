@@ -8,9 +8,9 @@ namespace Penca.Controllers
     {
         private readonly DeporteService _service;
 
-        public DeporteController()
+        public DeporteController(DeporteService service)
         {
-            _service = new DeporteService();
+            _service = service;
         }
 
         public IActionResult Index()

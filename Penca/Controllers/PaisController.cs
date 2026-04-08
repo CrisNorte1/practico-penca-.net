@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Penca.Data;
 using Penca.Models;
 using Penca.Services;
 
@@ -7,10 +8,12 @@ namespace Penca.Controllers
     public class PaisController : Controller
     {
         private readonly PaisService _paisService;
+        private readonly ConfederacionService _confederacionService;
 
-        public PaisController()
+        public PaisController(PaisService paisService, ConfederacionService confederacionService)
         {
-            _paisService = new PaisService();
+            _paisService = paisService;
+            _confederacionService = confederacionService;
         }
 
         public IActionResult Index()
@@ -23,6 +26,7 @@ namespace Penca.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Confederaciones = _confederacionService.GetConfederaciones();
             return View();
         }
 
@@ -34,6 +38,7 @@ namespace Penca.Controllers
                 _paisService.AddPais(pais);
                 return RedirectToAction("Index");
             }
+            ViewBag.Confederaciones = _confederacionService.GetConfederaciones();
             return View(pais);
         }
 
@@ -55,6 +60,7 @@ namespace Penca.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Confederaciones = _confederacionService.GetConfederaciones();
             return View(pais);
         }
 
@@ -63,6 +69,7 @@ namespace Penca.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Confederaciones = _confederacionService.GetConfederaciones();
                 return View(pais);
             }
 
