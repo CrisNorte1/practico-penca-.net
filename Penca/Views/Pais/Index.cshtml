@@ -16,6 +16,9 @@
             <th>Nombre</th>
             <th>Código</th>
             <th>Fecha de Fundación</th>
+            <th>Confederación</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +29,7 @@
                 <td>@pais.Nombre</td>
                 <td>@pais.Codigo</td>
                 <td>@pais.FechaFundacion.ToShortDateString()</td>
+                <td>@pais.Confederacion.Name</td>
                 <td><a asp-action="Delete" asp-route-id="@pais.Id" class="btn btn-danger">Eliminar</a></td>
                 <td><a asp-action="Update" asp-route-id="@pais.Id" class="btn btn-primary">Editar</a></td>
             </tr>

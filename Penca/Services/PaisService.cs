@@ -15,7 +15,17 @@ namespace Penca.Services
 
         public List<Pais> GetPaises()
         {
-            return _context.Paises.ToList();
+            return _context.Paises
+                .Include(p => p.Confederacion)
+                .OrderBy(p => p.Nombre)
+                .ToList();
+        }
+
+        public Pais? GetPaisById(long id)
+        {
+            return _context.Paises
+                .Include(p => p.Confederacion)
+                .FirstOrDefault(p => p.Id == id);
         }
 
         public void AddPais(Pais pais)
@@ -24,9 +34,9 @@ namespace Penca.Services
             _context.SaveChanges();
         }
 
-        public void RemovePais(Pais pais)
+        public void RemovePais(long id)
         {
-            var existing = _context.Paises.Find(pais.Id);
+            var existing = _context.Paises.FirstOrDefault(p => p.Id == id);
             if (existing != null)
             {
                 _context.Paises.Remove(existing);
@@ -34,17 +44,21 @@ namespace Penca.Services
             }
         }
 
-        public void UpdatePais(Pais pais)
+        public bool UpdatePais(Pais pais)
         {
-            var existingPais = _context.Paises.Find(pais.Id);
-            if (existingPais != null)
+            var existingPais = _context.Paises
+                .FirstOrDefault(p => p.Id == pais.Id);
+            if (existingPais == null)
             {
-                existingPais.Nombre = pais.Nombre;
-                existingPais.Codigo = pais.Codigo;
-                existingPais.FechaFundacion = pais.FechaFundacion;
-                existingPais.ConfederacionId = pais.ConfederacionId;
-                _context.SaveChanges();
+                return false;
             }
+
+            existingPais.Nombre = pais.Nombre;
+            existingPais.Codigo = pais.Codigo;
+            existingPais.FechaFundacion = pais.FechaFundacion;
+            existingPais.ConfederacionId = pais.ConfederacionId;
+            _context.SaveChanges();
+            return true;
         }
     }
 }

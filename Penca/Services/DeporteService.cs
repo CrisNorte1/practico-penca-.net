@@ -15,7 +15,17 @@ namespace Penca.Services
 
         public List<Deporte> GetDeportes()
         {
-            return _context.Deportes.ToList();
+            return _context.Deportes
+                .Include(d => d.Confederaciones)
+                .OrderBy(d => d.Name)
+                .ToList();
+        }
+
+        public Deporte? GetDeporteById(long id)
+        {
+            return _context.Deportes
+                .Include(d => d.Confederaciones)
+                .FirstOrDefault(d => d.Id == id);
         }
 
         public void AddDeporte(Deporte d)
@@ -24,9 +34,9 @@ namespace Penca.Services
             _context.SaveChanges();
         }
 
-        public void RemoveDeporte(Deporte d)
+        public void RemoveDeporte(long id)
         {
-            var existing = _context.Deportes.Find(d.Id);
+            var existing = _context.Deportes.FirstOrDefault(d => d.Id == id);
             if (existing != null)
             {
                 _context.Deportes.Remove(existing);
@@ -34,15 +44,19 @@ namespace Penca.Services
             }
         }
 
-        public void UpdateDeporte(Deporte d)
+        public bool UpdateDeporte(Deporte d)
         {
-            var existing = _context.Deportes.Find(d.Id);
-            if (existing != null)
+            var existing = _context.Deportes
+                .FirstOrDefault(x => x.Id == d.Id);
+            if (existing == null)
             {
-                existing.Name = d.Name;
-                existing.IsTeamSport = d.IsTeamSport;
-                _context.SaveChanges();
+                return false;
             }
+
+            existing.Name = d.Name;
+            existing.IsTeamSport = d.IsTeamSport;
+            _context.SaveChanges();
+            return true;
         }
     }
 }

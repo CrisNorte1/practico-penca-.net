@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Penca.Data;
 using Penca.Models;
 
@@ -14,7 +15,17 @@ namespace Penca.Services
 
         public List<Confederacion> GetConfederaciones()
         {
-            return _context.Confederaciones.ToList();
+            return _context.Confederaciones
+                .Include(c => c.Deporte)
+                .OrderBy(c => c.Name)
+                .ToList();
+        }
+
+        public Confederacion? GetConfederacionById(long id)
+        {
+            return _context.Confederaciones
+                .Include(c => c.Deporte)
+                .FirstOrDefault(c => c.Id == id);
         }
 
         public void AddConfederacion(Confederacion conf)
@@ -23,9 +34,9 @@ namespace Penca.Services
             _context.SaveChanges();
         }
 
-        public void RemoveConfederacion(Confederacion conf)
+        public void RemoveConfederacion(long id)
         {
-            var existing = _context.Confederaciones.Find(conf.Id);
+            var existing = _context.Confederaciones.FirstOrDefault(c => c.Id == id);
             if (existing != null)
             {
                 _context.Confederaciones.Remove(existing);
@@ -33,16 +44,20 @@ namespace Penca.Services
             }
         }
 
-        public void UpdateConfederacion(Confederacion conf)
+        public bool UpdateConfederacion(Confederacion conf)
         {
-            var existing = _context.Confederaciones.Find(conf.Id);
-            if (existing != null)
+            var existing = _context.Confederaciones
+                .FirstOrDefault(c => c.Id == conf.Id);
+            if (existing == null)
             {
-                existing.Name = conf.Name;
-                existing.Region = conf.Region;
-                existing.DeporteId = conf.DeporteId;
-                _context.SaveChanges();
+                return false;
             }
+
+            existing.Name = conf.Name;
+            existing.Region = conf.Region;
+            existing.DeporteId = conf.DeporteId;
+            _context.SaveChanges();
+            return true;
         }
     }
 }

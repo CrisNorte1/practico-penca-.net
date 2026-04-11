@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Penca.Data;
 using Penca.Models;
 using Penca.Services;
 
@@ -44,18 +43,14 @@ namespace Penca.Controllers
 
         public IActionResult Delete(long id)
         {
-            var pais = _paisService.GetPaises().FirstOrDefault(p => p.Id == id);
-            if (pais != null)
-            {
-                _paisService.RemovePais(pais);
-            }
+            _paisService.RemovePais(id);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Update(long id)
         {
-            var pais = _paisService.GetPaises().FirstOrDefault(p => p.Id == id);
+            var pais = _paisService.GetPaisById(id);
             if (pais == null)
             {
                 return NotFound();
@@ -73,7 +68,11 @@ namespace Penca.Controllers
                 return View(pais);
             }
 
-            _paisService.UpdatePais(pais);
+            if (!_paisService.UpdatePais(pais))
+            {
+                return NotFound();
+            }
+
             return RedirectToAction("Index");
         }
     }

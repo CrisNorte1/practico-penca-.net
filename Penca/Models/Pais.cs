@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace Penca.Models
 {
     public class Pais
@@ -14,8 +16,8 @@ namespace Penca.Models
         public DateTime FechaFundacion { get; set; }
         [Range(1, long.MaxValue, ErrorMessage = "La confederación es obligatoria.")]
         public long ConfederacionId { get; set; }
-        // Dejamos solo el ID para crear/editar países desde el formulario.
-        // public Confederacion Confederacion { get; set; } = null!;
+        [ValidateNever]
+        public Confederacion Confederacion { get; set; } = null!;
 
     }
 }

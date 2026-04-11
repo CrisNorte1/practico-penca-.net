@@ -35,15 +35,14 @@ namespace Penca.Controllers
 
         public IActionResult Delete(long id)
         {
-            var d = _service.GetDeportes().FirstOrDefault(x => x.Id == id);
-            if (d != null) _service.RemoveDeporte(d);
+            _service.RemoveDeporte(id);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Update(long id)
         {
-            var d = _service.GetDeportes().FirstOrDefault(x => x.Id == id);
+            var d = _service.GetDeporteById(id);
             if (d == null) return NotFound();
             return View(d);
         }
@@ -52,7 +51,11 @@ namespace Penca.Controllers
         public IActionResult Update(Deporte d)
         {
             if (!ModelState.IsValid) return View(d);
-            _service.UpdateDeporte(d);
+            if (!_service.UpdateDeporte(d))
+            {
+                return NotFound();
+            }
+
             return RedirectToAction("Index");
         }
     }

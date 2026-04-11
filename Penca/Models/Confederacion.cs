@@ -1,5 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+using System.Text.Json.Serialization;
+
 namespace Penca.Models
 {
     public class Confederacion
@@ -11,8 +15,9 @@ namespace Penca.Models
         public string Region { get; set; } = null!;
         [Range(1, long.MaxValue, ErrorMessage = "El deporte asociado a la confederación es obligatorio.")]
         public long DeporteId { get; set; }
-        // Dejamos solo el ID para crear/editar confederaciones desde el formulario.
-        // public Deporte Deporte { get; set; } = null!;
+        [ValidateNever]
+        public Deporte Deporte { get; set; } = null!;
+        [JsonIgnore]
         public List<Pais> Paises { get; set; } = new List<Pais>();
 
     }

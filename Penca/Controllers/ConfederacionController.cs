@@ -42,15 +42,14 @@ namespace Penca.Controllers
 
         public IActionResult Delete(long id)
         {
-            var conf = _service.GetConfederaciones().FirstOrDefault(c => c.Id == id);
-            if (conf != null) _service.RemoveConfederacion(conf);
+            _service.RemoveConfederacion(id);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Update(long id)
         {
-            var conf = _service.GetConfederaciones().FirstOrDefault(c => c.Id == id);
+            var conf = _service.GetConfederacionById(id);
             if (conf == null) return NotFound();
             ViewBag.Deportes = _deporteService.GetDeportes();
             return View(conf);
@@ -64,7 +63,11 @@ namespace Penca.Controllers
                 ViewBag.Deportes = _deporteService.GetDeportes();
                 return View(conf);
             }
-            _service.UpdateConfederacion(conf);
+            if (!_service.UpdateConfederacion(conf))
+            {
+                return NotFound();
+            }
+
             return RedirectToAction("Index");
         }
     }
